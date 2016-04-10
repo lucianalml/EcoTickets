@@ -24,7 +24,6 @@ public class IngressoAdapter extends BaseAdapter {
         this.ingressos = details;
     }
 
-
     @Override
     public int getCount() {
         if (ingressos == null) {
