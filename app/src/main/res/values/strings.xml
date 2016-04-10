@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">Eco Tickets</string>
+    <string name="btnGerar">Gerar Ingressos</string>
+    <string name="btnCheckin">Fazer Check-in</string>
+    <string name="btnListarConvidados">Listar convidados</string>
+    <string name="txtNome">Nome:</string>
+    <string name="txtDocumento">Documento:</string>
+    <string name="txtEmail">E-mail:</string>
+    <string name="btnEnviar">Enviar ingresso</string>
+    <string name="txtLerCodigo">Ler QR Code</string>
+    <string name="btnConfirmaCheckin">Confirmar Check-in</string>
+    <string name="txtListaConvidados">Lista de convidados</string>
+
+</resources>
