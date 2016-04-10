@@ -13,9 +13,10 @@ import io.realm.RealmConfiguration;
 public class GerarActivity extends AppCompatActivity {
 
     Button btnEnviar;
-
     EditText edtNome, edtDocumento, edtEmail;
     private Realm realm;
+
+//lalalala
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
