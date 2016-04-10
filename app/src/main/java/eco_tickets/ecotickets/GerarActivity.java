@@ -13,11 +13,13 @@ import io.realm.RealmConfiguration;
 public class GerarActivity extends AppCompatActivity {
 
     Button btnEnviar;
+
     EditText edtNome, edtDocumento, edtEmail;
     private Realm realm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gerar);
 
