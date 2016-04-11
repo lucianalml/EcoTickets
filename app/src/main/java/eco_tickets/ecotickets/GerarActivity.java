@@ -30,8 +30,6 @@ public class GerarActivity extends AppCompatActivity {
     EditText edtNome, edtDocumento, edtEmail;
     private Realm realm;
 
-//lalalala
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -101,7 +99,6 @@ public class GerarActivity extends AppCompatActivity {
         enviaEmail(vlEmail, vlQrCode);
 
 
-
         edtNome.setText("");
         edtDocumento.setText("");
         edtEmail.setText("");
@@ -112,7 +109,8 @@ public class GerarActivity extends AppCompatActivity {
 
             Bitmap bitmap = encodeAsBitmap(vlQrCode);
 
-            File file = new File(getApplicationContext().getCacheDir(), "qrCode" + ".png");
+            File file = new File(GerarActivity.this.getExternalCacheDir(), "qrCode" + ".png");
+
             FileOutputStream fOut = new FileOutputStream(file);
 
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, fOut);
@@ -124,7 +122,7 @@ public class GerarActivity extends AppCompatActivity {
             i.setType("message/rfc822");
             i.putExtra(Intent.EXTRA_EMAIL, new String[]{vlEmail});
             i.putExtra(Intent.EXTRA_SUBJECT, "Ingresso");
-//            i.putExtra(Intent.EXTRA_TEXT   , vlQrCode);
+            i.putExtra(Intent.EXTRA_TEXT   , vlQrCode);
             i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             i.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file));
             i.setType("image/png");
