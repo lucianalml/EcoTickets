@@ -18,8 +18,9 @@
         <activity
             android:name=".GerarActivity"
             android:parentActivityName=".MainActivity" />
-        <activity android:name=".RealmActivity" />
-        <activity android:name=".ListarActivity"></activity>
+        <activity
+            android:name=".ListarActivity"
+            android:parentActivityName=".MainActivity" />
     </application>
 
 </manifest>
