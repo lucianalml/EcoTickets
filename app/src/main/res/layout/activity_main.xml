@@ -52,7 +52,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/btnCheckin"
-        android:id="@+id/btnCheckin"
+        android:id="@+id/btn_Checkin"
         android:layout_gravity="center_horizontal"
         android:textSize="30sp" />
 

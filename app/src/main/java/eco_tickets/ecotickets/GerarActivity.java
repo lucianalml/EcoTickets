@@ -18,7 +18,6 @@ import com.google.zxing.common.BitMatrix;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.math.BigInteger;
 import java.security.SecureRandom;
 
 import io.realm.Realm;
@@ -72,10 +71,18 @@ public class GerarActivity extends AppCompatActivity {
 
     private void enviarIngressos(View view) {
 
+        if (verificaCampos() == false ){
+            return;
+        }
+
         String vlNome = edtNome.getText().toString();
         String vlDocumento = edtDocumento.getText().toString();
         String vlEmail = edtEmail.getText().toString();
         String vlQrCode;
+
+// Testes
+//        CheckBox cvChecked = (CheckBox) findViewById(R.id.cb_checkedIn);
+//        cvChecked.setChecked();
 
 // Gera Novo QrCode
         vlQrCode = randon();
@@ -98,10 +105,28 @@ public class GerarActivity extends AppCompatActivity {
 // Envia por email
         enviaEmail(vlEmail, vlQrCode);
 
-
         edtNome.setText("");
         edtDocumento.setText("");
         edtEmail.setText("");
+    }
+
+    private boolean verificaCampos() {
+
+        if (edtNome.getText().toString().trim().equals("")) {
+            edtNome.setError("Campo Nome é obrigatório");
+            return false;
+        }
+        else if (edtDocumento.getText().toString().trim().equals("")){
+            edtDocumento.setError("Campo Documento é obrigatório");
+            return false;
+        }
+        else if (edtEmail.getText().toString().trim().equals("")){
+            edtEmail.setError("Campo Email é obrigatório");
+            return false;
+        }
+        else {
+            return true;
+        }
     }
 
     private void enviaEmail(String vlEmail, String vlQrCode) {
@@ -121,8 +146,8 @@ public class GerarActivity extends AppCompatActivity {
             Intent i = new Intent(Intent.ACTION_SEND);
             i.setType("message/rfc822");
             i.putExtra(Intent.EXTRA_EMAIL, new String[]{vlEmail});
-            i.putExtra(Intent.EXTRA_SUBJECT, "Ingresso");
-            i.putExtra(Intent.EXTRA_TEXT   , vlQrCode);
+            i.putExtra(Intent.EXTRA_SUBJECT, "Seu Ingresso");
+//            i.putExtra(Intent.EXTRA_TEXT   , vlQrCode);
             i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             i.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file));
             i.setType("image/png");
@@ -163,10 +188,17 @@ public class GerarActivity extends AppCompatActivity {
         return bitmap;
     }
 
-
     private String randon(){
-        SecureRandom random = new SecureRandom();
-        return new BigInteger(20, random).toString(32);
+
+        String AB = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        SecureRandom rnd = new SecureRandom();
+        int tamString = 20;
+
+        StringBuilder sb = new StringBuilder( tamString );
+        for( int i = 0; i < tamString; i++ )
+            sb.append( AB.charAt( rnd.nextInt(AB.length()) ) );
+        return sb.toString();
+
     }
 
 }

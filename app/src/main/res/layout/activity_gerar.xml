@@ -40,7 +40,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/edt_nome"
                 android:layout_gravity="center_horizontal"
-                android:inputType="text" />
+                android:inputType="text|textPersonName" />
         </LinearLayout>
 
         <LinearLayout
@@ -61,7 +61,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/edt_documento"
                 android:layout_gravity="center_horizontal"
-                android:inputType="text" />
+                android:inputType="text|number" />
         </LinearLayout>
 
         <LinearLayout
@@ -82,7 +82,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/edt_email"
                 android:layout_gravity="center_horizontal"
-                android:inputType="text" />
+                android:inputType="text|textEmailAddress" />
         </LinearLayout>
 
         <Button

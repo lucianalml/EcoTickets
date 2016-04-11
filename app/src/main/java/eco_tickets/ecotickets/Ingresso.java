@@ -8,6 +8,7 @@ public class Ingresso extends RealmObject {
     private String nome;
     private String documento;
     private String email;
+    private boolean checked;
 
     @Index
     private String qrCode;
@@ -43,4 +44,13 @@ public class Ingresso extends RealmObject {
     public void setQrCode(String qrCode) {
         this.qrCode = qrCode;
     }
+
+    public boolean isChecked() {
+        return checked;
+    }
+
+    public void setChecked(boolean checked) {
+        this.checked = checked;
+    }
+
 }

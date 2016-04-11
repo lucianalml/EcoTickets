@@ -8,7 +8,7 @@ import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity {
 
-    Button btnGerar, btnListar;
+    Button btnGerar, btnListar, btnCheckin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
 
         btnGerar = (Button) findViewById(R.id.btn_Gerar );
         btnListar = (Button) findViewById(R.id.btn_ListarConvidados );
+        btnCheckin = (Button) findViewById(R.id.btn_Checkin );
 
     }
 
@@ -33,7 +34,6 @@ public class MainActivity extends AppCompatActivity {
                 gerarIngressos(v);
             }
         });
-
         btnListar.setOnClickListener( new View.OnClickListener() {
             public void onClick(View v) {
                 listarConvidados(v);
