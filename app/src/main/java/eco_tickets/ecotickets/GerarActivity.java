@@ -11,10 +11,12 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.zxing.BarcodeFormat;
+import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
-import com.google.zxing.qrcode.QRCodeWriter;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.math.BigInteger;
 import java.security.SecureRandom;
 
@@ -106,29 +108,26 @@ public class GerarActivity extends AppCompatActivity {
 
     private void enviaEmail(String vlEmail, String vlQrCode) {
         try {
-/*
+
+            Bitmap bitmap = encodeAsBitmap(vlQrCode);
+
             File file = new File(getApplicationContext().getCacheDir(), "qrCode" + ".png");
             FileOutputStream fOut = new FileOutputStream(file);
 
-            Bitmap bitmap = encodeToQrCode(vlQrCode, 400, 400);
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, fOut);
-
             fOut.flush();
             fOut.close();
             file.setReadable(true, false);
 
-            final Intent intent = new Intent(android.content.Intent.ACTION_SEND);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file));
-            intent.setType("image/png");
-            startActivity(intent);
-*/
 
             Intent i = new Intent(Intent.ACTION_SEND);
             i.setType("message/rfc822");
             i.putExtra(Intent.EXTRA_EMAIL  , new String[]{vlEmail});
             i.putExtra(Intent.EXTRA_SUBJECT, "Ingresso");
-            i.putExtra(Intent.EXTRA_TEXT   , vlQrCode);
+//            i.putExtra(Intent.EXTRA_TEXT   , vlQrCode);
+//            i.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file));
+            i.setType("image/png");
+
             try {
                 startActivity(Intent.createChooser(i, "Enviar ingresso por e-mail"));
             } catch (android.content.ActivityNotFoundException ex) {
@@ -141,22 +140,30 @@ public class GerarActivity extends AppCompatActivity {
 
     }
 
-    public static Bitmap encodeToQrCode(String text, int width, int height){
-        QRCodeWriter writer = new QRCodeWriter();
-        BitMatrix matrix = null;
+    Bitmap encodeAsBitmap(String str) throws WriterException {
+
+        BitMatrix result;
         try {
-            matrix = writer.encode(text, BarcodeFormat.QR_CODE, 100, 100);
-        } catch (WriterException ex) {
-            ex.printStackTrace();
+            result = new MultiFormatWriter().encode(str,
+                    BarcodeFormat.QR_CODE, 400, 400, null);
+        } catch (IllegalArgumentException iae) {
+            // Unsupported format
+            return null;
         }
-        Bitmap bmp = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565);
-        for (int x = 0; x < width; x++){
-            for (int y = 0; y < height; y++){
-                bmp.setPixel(x, y, matrix.get(x,y) ? Color.BLACK : Color.WHITE);
+        int w = result.getWidth();
+        int h = result.getHeight();
+        int[] pixels = new int[w * h];
+        for (int y = 0; y < h; y++) {
+            int offset = y * w;
+            for (int x = 0; x < w; x++) {
+                pixels[offset + x] = result.get(x, y) ? Color.BLACK : Color.WHITE;
             }
         }
-        return bmp;
+        Bitmap bitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
+        bitmap.setPixels(pixels, 0, 400, 0, 0, w, h);
+        return bitmap;
     }
+
 
     private String randon(){
         SecureRandom random = new SecureRandom();
