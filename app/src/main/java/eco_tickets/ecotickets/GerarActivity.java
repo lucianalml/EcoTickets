@@ -3,6 +3,7 @@ package eco_tickets.ecotickets;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -119,13 +120,13 @@ public class GerarActivity extends AppCompatActivity {
             fOut.close();
             file.setReadable(true, false);
 
-
             Intent i = new Intent(Intent.ACTION_SEND);
             i.setType("message/rfc822");
-            i.putExtra(Intent.EXTRA_EMAIL  , new String[]{vlEmail});
+            i.putExtra(Intent.EXTRA_EMAIL, new String[]{vlEmail});
             i.putExtra(Intent.EXTRA_SUBJECT, "Ingresso");
 //            i.putExtra(Intent.EXTRA_TEXT   , vlQrCode);
-//            i.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file));
+            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            i.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file));
             i.setType("image/png");
 
             try {
