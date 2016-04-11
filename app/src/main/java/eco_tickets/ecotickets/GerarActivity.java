@@ -3,20 +3,18 @@ package eco_tickets.ecotickets;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.math.BigInteger;
 import java.security.SecureRandom;
 
@@ -108,6 +106,7 @@ public class GerarActivity extends AppCompatActivity {
 
     private void enviaEmail(String vlEmail, String vlQrCode) {
         try {
+/*
             File file = new File(getApplicationContext().getCacheDir(), "qrCode" + ".png");
             FileOutputStream fOut = new FileOutputStream(file);
 
@@ -117,11 +116,24 @@ public class GerarActivity extends AppCompatActivity {
             fOut.flush();
             fOut.close();
             file.setReadable(true, false);
+
             final Intent intent = new Intent(android.content.Intent.ACTION_SEND);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file));
             intent.setType("image/png");
             startActivity(intent);
+*/
+
+            Intent i = new Intent(Intent.ACTION_SEND);
+            i.setType("message/rfc822");
+            i.putExtra(Intent.EXTRA_EMAIL  , new String[]{vlEmail});
+            i.putExtra(Intent.EXTRA_SUBJECT, "Ingresso");
+            i.putExtra(Intent.EXTRA_TEXT   , vlQrCode);
+            try {
+                startActivity(Intent.createChooser(i, "Enviar ingresso por e-mail"));
+            } catch (android.content.ActivityNotFoundException ex) {
+                Toast.makeText(GerarActivity.this, "There are no email clients installed.", Toast.LENGTH_SHORT).show();
+            }
 
         } catch (Exception e) {
             e.printStackTrace();
