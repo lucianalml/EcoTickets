@@ -16,10 +16,12 @@ public class ScannerActivity extends Activity implements ZXingScannerView.Result
     @Override
     public void onCreate(Bundle state) {
         super.onCreate(state);
+
+        realm = Realm.getDefaultInstance();
+
         mScannerView = new ZXingScannerView(this);   // Programmatically initialize the scanner view
         setContentView(mScannerView);                // Set the scanner view as the content view
 
-        realm = Realm.getDefaultInstance();
     }
 
     @Override
@@ -44,14 +46,14 @@ public class ScannerActivity extends Activity implements ZXingScannerView.Result
     @Override
     public void handleResult(Result result) {
 
-
         if (verificaUsuario(result.getText())) {
 
 // Atualiza banco de dados
+            realm.beginTransaction();
+
             Ingresso ingresso = realm.createObject(Ingresso.class);
             ingresso = realm.where(Ingresso.class).equalTo("qrCode", result.getText()).findFirst();
 
-            realm.beginTransaction();
             ingresso.setChecked(true);
             realm.commitTransaction();
         }
@@ -71,12 +73,19 @@ public class ScannerActivity extends Activity implements ZXingScannerView.Result
 
     private boolean verificaUsuario(String vQrCode) {
 
+        realm.beginTransaction();
+
         Ingresso ingresso = realm.createObject(Ingresso.class);
 
 // Verifica se o qrCode está na lista de convidados e ainda não entrou no evento
         ingresso = realm.where(Ingresso.class).equalTo("qrCode", vQrCode).findFirst();
 
-        if (ingresso.getQrCode() == vQrCode && ingresso.isChecked() == false ) {
+        String vlQrCode = ingresso.getQrCode();
+        boolean vlChecked = ingresso.isChecked();
+
+        realm.commitTransaction();
+
+        if ( vlQrCode == vQrCode && vlChecked == false ) {
             return true;
         }
         else {
