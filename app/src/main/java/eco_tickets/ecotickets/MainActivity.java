@@ -40,6 +40,12 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        btnCheckin.setOnClickListener( new View.OnClickListener() {
+            public void onClick(View v) {
+                fazerCheckIn(v);
+            }
+        });
+
     }
 
 
@@ -54,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void fazerCheckIn(View view) {
-        Intent intent = new Intent(this, CheckInActivity.class);
+        Intent intent = new Intent(this, ScannerActivity.class);
         startActivity(intent);
     }
 
