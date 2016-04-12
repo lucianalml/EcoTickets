@@ -22,8 +22,6 @@ public class CheckInActivity extends AppCompatActivity {
 //        Realm.deleteRealm(realmConfig); // Testes -> Exclui o banco de dados da execução anterior
         realm = Realm.getInstance(realmConfig);
 */
-
-        lerQrCode();
     }
 
     @Override
@@ -32,9 +30,5 @@ public class CheckInActivity extends AppCompatActivity {
         realm.close(); // Remember to close Realm when done.
     }
 
-    private void lerQrCode() {
-
-
-    }
 
 }
