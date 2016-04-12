@@ -21,7 +21,6 @@ import java.io.FileOutputStream;
 import java.security.SecureRandom;
 
 import io.realm.Realm;
-import io.realm.RealmConfiguration;
 
 public class GerarActivity extends AppCompatActivity {
 
@@ -38,10 +37,7 @@ public class GerarActivity extends AppCompatActivity {
         setUI();
         setActions();
 
-        // Create the Realm configuration
-        RealmConfiguration realmConfig = new RealmConfiguration.Builder(getApplicationContext()).build();
-//        Realm.deleteRealm(realmConfig); // Testes -> Exclui o banco de dados da execução anterior
-        realm = Realm.getInstance(realmConfig);
+        realm = Realm.getDefaultInstance();
 
     }
 

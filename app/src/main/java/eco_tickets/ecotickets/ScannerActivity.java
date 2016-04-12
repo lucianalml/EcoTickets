@@ -2,12 +2,10 @@ package eco_tickets.ecotickets;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.util.Log;
 
 import com.google.zxing.Result;
 
 import io.realm.Realm;
-import io.realm.RealmConfiguration;
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
 public class ScannerActivity extends Activity implements ZXingScannerView.ResultHandler {
@@ -21,12 +19,7 @@ public class ScannerActivity extends Activity implements ZXingScannerView.Result
         mScannerView = new ZXingScannerView(this);   // Programmatically initialize the scanner view
         setContentView(mScannerView);                // Set the scanner view as the content view
 
-        // Create the Realm configuration
-        RealmConfiguration realmConfig = new RealmConfiguration.Builder(getApplicationContext()).build();
-//        Realm.deleteRealm(realmConfig); // Testes -> Exclui o banco de dados da execução anterior
-        realm = Realm.getInstance(realmConfig);
-
-
+        realm = Realm.getDefaultInstance();
     }
 
     @Override
@@ -52,7 +45,7 @@ public class ScannerActivity extends Activity implements ZXingScannerView.Result
     public void handleResult(Result result) {
 
 
-        if (verificaUsuario(result.getText())){
+        if (verificaUsuario(result.getText())) {
 
 // Atualiza banco de dados
             Ingresso ingresso = realm.createObject(Ingresso.class);
@@ -61,15 +54,18 @@ public class ScannerActivity extends Activity implements ZXingScannerView.Result
             realm.beginTransaction();
             ingresso.setChecked(true);
             realm.commitTransaction();
+        }
+        else {
+
+// Continua leitura
+            // If you would like to resume scanning, call this method below:
+            mScannerView.resumeCameraPreview(this);
 
         }
 
         // Do something with the result here
-        Log.v("QRCODE", result.getText()); // Prints scan results
-        Log.v("QRCODE", result.getBarcodeFormat().toString()); // Prints the scan format (qrcode, pdf417 etc.)
-
-        // If you would like to resume scanning, call this method below:
-        mScannerView.resumeCameraPreview(this);
+//        Log.v("QRCODE", result.getText()); // Prints scan results
+//        Log.v("QRCODE", result.getBarcodeFormat().toString()); // Prints the scan format (qrcode, pdf417 etc.)
 
     }
 
