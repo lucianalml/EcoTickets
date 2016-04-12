@@ -53,4 +53,9 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    public void fazerCheckIn(View view) {
+        Intent intent = new Intent(this, CheckInActivity.class);
+        startActivity(intent);
+    }
+
 }

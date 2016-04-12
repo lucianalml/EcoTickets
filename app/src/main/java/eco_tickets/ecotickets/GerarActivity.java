@@ -75,41 +75,33 @@ public class GerarActivity extends AppCompatActivity {
             return;
         }
 
-        String vlNome = edtNome.getText().toString();
-        String vlDocumento = edtDocumento.getText().toString();
-        String vlEmail = edtEmail.getText().toString();
-        String vlQrCode;
-
-// Testes
-//        CheckBox cvChecked = (CheckBox) findViewById(R.id.cb_checkedIn);
-//        cvChecked.setChecked();
-
 // Gera Novo QrCode
-        vlQrCode = randon();
-//        Log.w("QrCode", vlQrCode);
+        String vlQrCode = randon();
 
 //TODO Verificar se é unico
 
-        // Salva novo ingresso no banco de dados
+// Salva o novo ingresso no banco de dados
         realm.beginTransaction();
 
         Ingresso ingresso = realm.createObject(Ingresso.class);
 
-        ingresso.setNome(vlNome);
-        ingresso.setDocumento(vlDocumento);
-        ingresso.setEmail(vlEmail);
+        ingresso.setNome(edtNome.getText().toString());
+        ingresso.setDocumento(edtDocumento.getText().toString());
+        ingresso.setEmail(edtEmail.getText().toString());
         ingresso.setQrCode(vlQrCode);
 
         realm.commitTransaction();
 
 // Envia por email
-        enviaEmail(vlEmail, vlQrCode);
+        enviaEmail(edtEmail.getText().toString(), vlQrCode);
 
+// Limpa os campos da tela
         edtNome.setText("");
         edtDocumento.setText("");
         edtEmail.setText("");
     }
 
+// Verifica se os campos obrigatórios estão preenchidos
     private boolean verificaCampos() {
 
         if (edtNome.getText().toString().trim().equals("")) {
@@ -129,25 +121,26 @@ public class GerarActivity extends AppCompatActivity {
         }
     }
 
+// Chama o aplicativo de email para enviar o ingresso para o email do convidado
     private void enviaEmail(String vlEmail, String vlQrCode) {
         try {
 
+// Gera o QrCode
             Bitmap bitmap = encodeAsBitmap(vlQrCode);
 
+// Salva a imagem gerada no diretório de cache do armazenamento externo
             File file = new File(GerarActivity.this.getExternalCacheDir(), "qrCode" + ".png");
-
             FileOutputStream fOut = new FileOutputStream(file);
-
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, fOut);
             fOut.flush();
             fOut.close();
             file.setReadable(true, false);
 
+// Chama o aplicativo de e-mails para enviar o QrCode gerado para o destinatário
             Intent i = new Intent(Intent.ACTION_SEND);
             i.setType("message/rfc822");
             i.putExtra(Intent.EXTRA_EMAIL, new String[]{vlEmail});
             i.putExtra(Intent.EXTRA_SUBJECT, "Seu Ingresso");
-//            i.putExtra(Intent.EXTRA_TEXT   , vlQrCode);
             i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             i.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file));
             i.setType("image/png");
@@ -155,7 +148,7 @@ public class GerarActivity extends AppCompatActivity {
             try {
                 startActivity(Intent.createChooser(i, "Enviar ingresso por e-mail"));
             } catch (android.content.ActivityNotFoundException ex) {
-                Toast.makeText(GerarActivity.this, "There are no email clients installed.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(GerarActivity.this, "Não existem aplicativos de e-mail cadastrados.", Toast.LENGTH_SHORT).show();
             }
 
         } catch (Exception e) {
@@ -164,6 +157,7 @@ public class GerarActivity extends AppCompatActivity {
 
     }
 
+// Transforma uma string em uma imagem QrCode
     Bitmap encodeAsBitmap(String str) throws WriterException {
 
         BitMatrix result;
@@ -188,6 +182,7 @@ public class GerarActivity extends AppCompatActivity {
         return bitmap;
     }
 
+// Gera uma string aleatória de tamanho 20
     private String randon(){
 
         String AB = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
