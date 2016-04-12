@@ -1,6 +1,7 @@
 package eco_tickets.ecotickets;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.google.zxing.Result;
@@ -46,24 +47,33 @@ public class ScannerActivity extends Activity implements ZXingScannerView.Result
     @Override
     public void handleResult(Result result) {
 
-        if (verificaUsuario(result.getText())) {
+        boolean valido = false;
+        realm.beginTransaction();
+        Ingresso ingresso = realm.createObject(Ingresso.class);
 
-// Atualiza banco de dados
-            realm.beginTransaction();
+// Verifica se o qrCode está na lista de convidados e ainda não entrou no evento
+        ingresso = realm.where(Ingresso.class).equalTo("qrCode", result.getText()).findFirst();
 
-            Ingresso ingresso = realm.createObject(Ingresso.class);
-            ingresso = realm.where(Ingresso.class).equalTo("qrCode", result.getText()).findFirst();
+        if ( ingresso.isValid() &&
+                ingresso.getQrCode() == result.getText() &&
+                ingresso.isChecked() == false ) {
 
-            ingresso.setChecked(true);
-            realm.commitTransaction();
+            valido = true;
+        }
+
+        realm.commitTransaction();
+
+        if (valido) {
+// Chama a tela de confirmação
+            Intent intent = new Intent(this, CheckInActivity.class);
+            intent.putExtra("QRCODE", result.getText());
+            startActivity(intent);
         }
         else {
-
-// Continua leitura
-            // If you would like to resume scanning, call this method below:
+// Continua a scannear
             mScannerView.resumeCameraPreview(this);
-
         }
+
 
         // Do something with the result here
 //        Log.v("QRCODE", result.getText()); // Prints scan results
@@ -71,27 +81,4 @@ public class ScannerActivity extends Activity implements ZXingScannerView.Result
 
     }
 
-    private boolean verificaUsuario(String vQrCode) {
-
-        realm.beginTransaction();
-
-        Ingresso ingresso = realm.createObject(Ingresso.class);
-
-// Verifica se o qrCode está na lista de convidados e ainda não entrou no evento
-        ingresso = realm.where(Ingresso.class).equalTo("qrCode", vQrCode).findFirst();
-
-        String vlQrCode = ingresso.getQrCode();
-        boolean vlChecked = ingresso.isChecked();
-
-        realm.commitTransaction();
-
-        if ( vlQrCode == vQrCode && vlChecked == false ) {
-            return true;
-        }
-        else {
-            return false;
-
-        }
-
-    }
 }
