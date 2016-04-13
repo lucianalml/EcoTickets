@@ -26,8 +26,13 @@
         <activity
             android:name=".ListarActivity"
             android:parentActivityName=".MainActivity" />
-        <activity android:name=".CheckInActivity" />
-        <activity android:name=".ScannerActivity"></activity>
+
+        <activity android:name=".ScannerActivity"
+            android:parentActivityName=".MainActivity" />
+
+        <activity android:name=".CheckInActivity"
+            android:parentActivityName=".ScannerActivity" />
+
     </application>
 
 </manifest>

@@ -48,22 +48,19 @@ public class ScannerActivity extends Activity implements ZXingScannerView.Result
     public void handleResult(Result result) {
 
         boolean valido = false;
-        realm.beginTransaction();
-        Ingresso ingresso = realm.createObject(Ingresso.class);
 
 // Verifica se o qrCode está na lista de convidados e ainda não entrou no evento
-        ingresso = realm.where(Ingresso.class).equalTo("qrCode", result.getText()).findFirst();
+        Ingresso ingresso = realm.where(Ingresso.class).equalTo("qrCode", result.getText()).findFirst();
 
-        if ( ingresso.isValid() &&
-                ingresso.getQrCode() == result.getText() &&
-                ingresso.isChecked() == false ) {
+        if (  ingresso.isValid() &&
+                 ingresso.getQrCode().equals(result.getText()) &&
+                 ingresso.isChecked() == false  ) {
 
             valido = true;
         }
 
-        realm.commitTransaction();
-
         if (valido) {
+
 // Chama a tela de confirmação
             Intent intent = new Intent(this, CheckInActivity.class);
             intent.putExtra("QRCODE", result.getText());

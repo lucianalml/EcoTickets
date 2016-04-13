@@ -26,10 +26,10 @@ public class CheckInActivity extends AppCompatActivity {
         Intent intent = getIntent();
         qrcode = intent.getStringExtra("QRCODE");
 
+        realm = Realm.getDefaultInstance();
+
         setUI();
         setActions();
-
-        realm = Realm.getDefaultInstance();
 
     }
 
@@ -45,14 +45,10 @@ public class CheckInActivity extends AppCompatActivity {
         edtDocumento = (EditText) findViewById(R.id.edt_documento);
 
 // Recupera nome e documento
-        realm.beginTransaction();
-        Ingresso ingresso = realm.createObject(Ingresso.class);
+        Ingresso ingresso = realm.where(Ingresso.class).equalTo("qrCode", qrcode).findFirst();
 
-        ingresso = realm.where(Ingresso.class).equalTo("qrCode", qrcode).findFirst();
         edtNome.setText(ingresso.getNome());
         edtDocumento.setText(ingresso.getDocumento());
-
-        realm.commitTransaction();
 
     }
 
@@ -66,10 +62,10 @@ public class CheckInActivity extends AppCompatActivity {
     }
 
     private void confirmarCheckIn(View view) {
-        realm.beginTransaction();
-        Ingresso ingresso = realm.createObject(Ingresso.class);
 
-        ingresso = realm.where(Ingresso.class).equalTo("qrCode", qrcode).findFirst();
+        Ingresso ingresso = realm.where(Ingresso.class).equalTo("qrCode", qrcode).findFirst();
+
+        realm.beginTransaction();
         ingresso.setChecked(true);
         realm.commitTransaction();
 
