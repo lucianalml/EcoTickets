@@ -3,6 +3,7 @@ package eco_tickets.ecotickets;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import com.google.zxing.Result;
 
@@ -47,34 +48,30 @@ public class ScannerActivity extends Activity implements ZXingScannerView.Result
     @Override
     public void handleResult(Result result) {
 
-        boolean valido = false;
-
 // Verifica se o qrCode está na lista de convidados e ainda não entrou no evento
         Ingresso ingresso = realm.where(Ingresso.class).equalTo("qrCode", result.getText()).findFirst();
 
-        if (  ingresso.isValid() &&
-                 ingresso.getQrCode().equals(result.getText()) &&
-                 ingresso.isChecked() == false  ) {
+// Se o código não é válido
+        if (!ingresso.isValid() || !ingresso.getQrCode().equals(result.getText())) {
+            Toast.makeText(ScannerActivity.this, "Código inválido.",
+                    Toast.LENGTH_SHORT).show();
 
-            valido = true;
-        }
-
-        if (valido) {
-
-// Chama a tela de confirmação
-            Intent intent = new Intent(this, CheckInActivity.class);
-            intent.putExtra("QRCODE", result.getText());
-            startActivity(intent);
-        }
-        else {
-// Continua a scannear
+// Continua a ler
             mScannerView.resumeCameraPreview(this);
+
         }
 
+// Se o código está atribuido a uma pessoa chama a tela de check-in
+        else {
 
-        // Do something with the result here
-//        Log.v("QRCODE", result.getText()); // Prints scan results
-//        Log.v("QRCODE", result.getBarcodeFormat().toString()); // Prints the scan format (qrcode, pdf417 etc.)
+            Intent intent = new Intent(this, CheckInActivity.class);
+            intent.putExtra("NOME", ingresso.getNome());
+            intent.putExtra("DOCUMENTO", ingresso.getDocumento());
+            intent.putExtra("QRCODE", ingresso.getQrCode());
+            intent.putExtra("CHECKED", ingresso.isChecked());
+            startActivity(intent);
+
+        }
 
     }
 

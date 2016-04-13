@@ -7,6 +7,7 @@ import io.realm.RealmConfiguration;
 
 public class EcoTickets extends Application {
 
+
         @Override
         public void onCreate() {
         super.onCreate();
