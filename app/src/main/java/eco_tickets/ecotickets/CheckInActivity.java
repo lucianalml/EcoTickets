@@ -15,7 +15,7 @@ import io.realm.Realm;
 public class CheckInActivity extends AppCompatActivity {
 
     private Realm realm;
-    Button btnConfirma;
+    Button btnConfirma, btnCancela;
     EditText edtNome, edtDocumento;
     TextView tvAutorizado;
     String nome, documento, qrcode;
@@ -49,9 +49,12 @@ public class CheckInActivity extends AppCompatActivity {
 
     private void setUI() {
 
-        btnConfirma = (Button) findViewById(R.id.btn_Confirma);
+        btnConfirma = (Button) findViewById(R.id.btn_confirma);
+        btnCancela = (Button) findViewById(R.id.btn_cancela);
+
         edtNome = (EditText) findViewById(R.id.edt_nome);
         edtDocumento = (EditText) findViewById(R.id.edt_documento);
+
         tvAutorizado = (TextView) findViewById(R.id.tv_autorizado);
 
 
@@ -63,6 +66,9 @@ public class CheckInActivity extends AppCompatActivity {
         if (checked) {
             tvAutorizado.setText("Código já utilizado.");
             tvAutorizado.setBackgroundColor(Color.RED);
+
+// Desabilita botão de confirmar
+            btnConfirma.setEnabled(false);
         }
             else {
             tvAutorizado.setText("Autorizado.");
@@ -81,6 +87,11 @@ public class CheckInActivity extends AppCompatActivity {
                 confirmarCheckIn(v);
             }
         });
+        btnCancela.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                cancelar(v);
+            }
+        });
     }
 
     private void confirmarCheckIn(View view) {
@@ -94,8 +105,12 @@ public class CheckInActivity extends AppCompatActivity {
 
         Toast.makeText(CheckInActivity.this, "Check-in confirmado.", Toast.LENGTH_SHORT).show();
 
+        finish();
 
     }
 
-
+    private void cancelar(View view) {
+        finish();
     }
+
+}

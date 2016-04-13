@@ -8,7 +8,8 @@
     <string name="txtEmail">E-mail:</string>
     <string name="btnEnviar">Enviar ingresso</string>
     <string name="txtLerCodigo">Ler QR Code</string>
-    <string name="btnConfirmaCheckin">Confirmar Check-in</string>
+    <string name="btnConfirmaCheckin">Confirmar</string>
     <string name="txtListaConvidados">Lista de convidados</string>
+    <string name="btnCancelar">Cancelar</string>
 
 </resources>

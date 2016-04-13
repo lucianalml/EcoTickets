@@ -133,16 +133,18 @@ public class GerarActivity extends AppCompatActivity {
             file.setReadable(true, false);
 
 // Chama o aplicativo de e-mails para enviar o QrCode gerado para o destinatário
-            Intent i = new Intent(Intent.ACTION_SEND);
-            i.setType("message/rfc822");
-            i.putExtra(Intent.EXTRA_EMAIL, new String[]{vlEmail});
-            i.putExtra(Intent.EXTRA_SUBJECT, "Seu Ingresso");
-            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            i.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file));
-            i.setType("image/png");
+            Intent email = new Intent(Intent.ACTION_SEND);
+            email.setType("application/octet-stream");
+//            email.setType("message/rfc822");
+            email.putExtra(Intent.EXTRA_EMAIL, new String[]{vlEmail});
+            email.putExtra(Intent.EXTRA_SUBJECT, "Seu Ingresso");
+            email.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            email.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file));
+            email.setType("image/png");
 
             try {
-                startActivity(Intent.createChooser(i, "Enviar ingresso por e-mail"));
+                startActivity(Intent.createChooser(email, "Enviar ingresso por e-mail"));
+
             } catch (android.content.ActivityNotFoundException ex) {
                 Toast.makeText(GerarActivity.this, "Não existem aplicativos de e-mail cadastrados.", Toast.LENGTH_SHORT).show();
             }
