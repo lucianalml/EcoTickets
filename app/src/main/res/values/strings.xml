@@ -1,15 +1,16 @@
 <resources>
     <string name="app_name">Eco Tickets</string>
-    <string name="btnGerar">Gerar Ingressos</string>
+    <string name="btnGerar">Gerar Convite</string>
     <string name="btnCheckin">Fazer Check-in</string>
     <string name="btnListarConvidados">Listar convidados</string>
     <string name="txtNome">Nome:</string>
     <string name="txtDocumento">Documento:</string>
     <string name="txtEmail">E-mail:</string>
-    <string name="btnEnviar">Enviar ingresso</string>
+    <string name="btnEnviar">Enviar</string>
     <string name="txtLerCodigo">Ler QR Code</string>
     <string name="btnConfirmaCheckin">Confirmar</string>
     <string name="txtListaConvidados">Lista de convidados</string>
     <string name="btnCancelar">Cancelar</string>
+    <string name="strEvento">GDG Curitiba</string>
 
 </resources>
