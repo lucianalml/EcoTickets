@@ -56,6 +56,7 @@ public class IngressoAdapter extends RecyclerView.Adapter<IngressoAdapter.MyView
         holder.checked.setChecked((ingresso.isChecked()));
 
         holder.checked.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 

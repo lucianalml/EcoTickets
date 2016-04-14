@@ -1,7 +1,9 @@
 package eco_tickets.ecotickets;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -43,6 +45,8 @@ public class ListarActivity extends AppCompatActivity {
         mRecyclerView.setAdapter(mAdapter);
 
         mRecyclerView.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(), mRecyclerView, new ClickListener() {
+
+
             @Override
             public void onClick(View view, int position) {
 
@@ -63,8 +67,53 @@ public class ListarActivity extends AppCompatActivity {
             @Override
             public void onLongClick(View view, int position) {
 
+                
+
+                final Ingresso modifiedIngresso = ingressoList.get(position);
+                final int item_position = position;
+
+// Recupera o objeto do realm
+                final Ingresso ingresso = realm.where(Ingresso.class).equalTo("qrCode", modifiedIngresso.getQrCode()).findFirst();
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(ListarActivity.this);
+
+                builder.setTitle("Confirmação");
+                builder.setMessage("Deseja deletar" + ingresso.getNome() + "?");
+
+                builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+
+                    public void onClick(DialogInterface dialog, int which) {
+
+// Remove do banco de dados
+                        realm.beginTransaction();
+                        ingresso.removeFromRealm();
+                        realm.commitTransaction();
+
+
+                        ingressoList.remove(ingressoList.get(item_position));
+                        // Do nothing but close the dialog
+                        dialog.dismiss();
+                    }
+
+                });
+
+                builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Do nothing
+                        dialog.dismiss();
+                    }
+                });
+
+                AlertDialog alert = builder.create();
+                alert.show();
+
+
+
             }
         }));
+
     }
 
     @Override
