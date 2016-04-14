@@ -5,12 +5,22 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.TextView;
+
 import java.util.List;
+
+import io.realm.Realm;
 
 public class IngressoAdapter extends RecyclerView.Adapter<IngressoAdapter.MyViewHolder> {
 
     private List<Ingresso> ingressosList;
+    private Realm realm;
+
+
+    public IngressoAdapter(List<Ingresso> ingressos) {
+        this.ingressosList = ingressos;
+    }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
@@ -22,12 +32,8 @@ public class IngressoAdapter extends RecyclerView.Adapter<IngressoAdapter.MyView
             nome = (TextView) view.findViewById(R.id.txt_nome);
             documento = (TextView) view.findViewById(R.id.txt_documento);
             checked = (CheckBox) view.findViewById(R.id.cb_checkedIn);
+
         }
-    }
-
-
-    public IngressoAdapter(List<Ingresso> ingressos) {
-        this.ingressosList = ingressos;
     }
 
     @Override
@@ -41,13 +47,30 @@ public class IngressoAdapter extends RecyclerView.Adapter<IngressoAdapter.MyView
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
 
-        Ingresso ingresso = ingressosList.get(position);
+        final Ingresso ingresso = ingressosList.get(position);
+
         holder.nome.setText(ingresso.getNome());
         holder.documento.setText("Documento: " + ingresso.getDocumento());
+
+        holder.checked.setOnCheckedChangeListener(null);
         holder.checked.setChecked((ingresso.isChecked()));
 
-//        holder.nome
+        holder.checked.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
+// Salva o status alterado
+
+                realm = Realm.getDefaultInstance();
+
+                realm.beginTransaction();
+                ingresso.setChecked(isChecked);
+                realm.commitTransaction();
+
+                realm.close(); // Fecha o real
+
+            }
+        });
     }
 
     @Override
