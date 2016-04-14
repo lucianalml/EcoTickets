@@ -40,10 +40,14 @@ public class IngressoAdapter extends RecyclerView.Adapter<IngressoAdapter.MyView
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
+
         Ingresso ingresso = ingressosList.get(position);
         holder.nome.setText(ingresso.getNome());
-        holder.documento.setText(ingresso.getDocumento());
+        holder.documento.setText("Documento: " + ingresso.getDocumento());
         holder.checked.setChecked((ingresso.isChecked()));
+
+//        holder.nome
+
     }
 
     @Override

@@ -1,32 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:gravity="left"
-    android:orientation="horizontal">
+    android:layout_height="match_parent"
+    android:focusable="true"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:paddingTop="10dp"
+    android:paddingBottom="10dp"
+    android:clickable="true"
+    android:background="@color/primary_light"
+    android:orientation="vertical">
 
     <TextView
         android:id="@+id/txt_nome"
-        android:layout_width="wrap_content"
+        android:textColor="@color/primary_text"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        android:layout_alignParentTop="true"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:textColor="@android:color/black"
-        android:layout_weight="1"
-        android:textSize="20sp" />
+        android:text="Luciana Lima" />
 
     <TextView
         android:id="@+id/txt_documento"
-        android:layout_width="wrap_content"
+        android:textColor="@color/secondary_text"
+        android:layout_below="@id/txt_nome"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:textColor="@android:color/black"
-        android:layout_weight="1"
-        android:textSize="20sp" />
+        android:text="12313221" />
 
     <CheckBox
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:id="@+id/cb_checkedIn"
-        android:textSize="20sp" />
+        android:textColor="@color/secondary_text"
+        android:layout_width="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_height="wrap_content" />
 
-</LinearLayout>
+</RelativeLayout>
