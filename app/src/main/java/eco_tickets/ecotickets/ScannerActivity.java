@@ -48,14 +48,13 @@ public class ScannerActivity extends Activity implements ZXingScannerView.Result
     @Override
     public void handleResult(Result result) {
 
-// Verifica se o qrCode está na lista de convidados e ainda não entrou no evento
+// Verifica se o qrCode está na lista do evento
         Ingresso ingresso = realm.where(Ingresso.class).equalTo("qrCode", result.getText()).findFirst();
 
-// Se o código não é válido
-        if (!ingresso.isValid() || !ingresso.getQrCode().equals(result.getText())) {
+// Se nao encontrou
+        if (ingresso == null ) {
             Toast.makeText(ScannerActivity.this, "Código inválido.",
                     Toast.LENGTH_SHORT).show();
-
 // Continua a ler
             mScannerView.resumeCameraPreview(this);
 
