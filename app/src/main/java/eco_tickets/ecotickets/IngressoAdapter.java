@@ -5,7 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import java.util.List;
@@ -28,12 +27,8 @@ public class IngressoAdapter extends RecyclerView.Adapter<IngressoAdapter.ViewHo
 
         ViewHolder holder = new ViewHolder(v);
 
-//        holder.nome.setOnClickListener(IngressoAdapter.this);
-//        holder.nome.setTag(holder);
-
         return holder;
 
-//        return new ViewHolder(v);
     }
 
     @Override
@@ -41,22 +36,31 @@ public class IngressoAdapter extends RecyclerView.Adapter<IngressoAdapter.ViewHo
 
         holder.nome.setText(ingressosList.get(position).getNome());
         holder.documento.setText("Documento: " + ingressosList.get(position).getDocumento());
-//        holder.checked.setOnCheckedChangeListener(null);
         holder.checked.setChecked((ingressosList.get(position).isChecked()));
         holder.qrCode = (ingressosList.get(position).getQrCode());
 
-        holder.checked.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+// ?
+        holder.checked.setTag(new Integer(position));
 
+        holder.checked.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+            public void onClick(View v)
+            {
+                CheckBox cb = (CheckBox)v;
 
-// Salva o status alterado //
+                int clickedPos = ((Integer)cb.getTag()).intValue();
 
+// Recupera o ingresso selecionado e atualiza o checkin no banco de dados
                 realm = Realm.getDefaultInstance();
-//                realm.beginTransaction();
-//                ingresso.setChecked(isChecked);
-//                realm.commitTransaction();
-                realm.close(); // Fecha o real
+                Ingresso ingresso = realm.where(Ingresso.class).equalTo("qrCode", ingressosList.get(clickedPos).getQrCode()).findFirst();
+
+                realm.beginTransaction();
+                ingresso.setChecked(cb.isChecked());
+                realm.commitTransaction();
+                realm.close();
+
+                notifyItemChanged(clickedPos);
 
             }
         });
