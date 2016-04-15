@@ -9,11 +9,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Evento X"
+        android:text="Código encontrado"
         android:id="@+id/txtEvento"
         android:layout_gravity="center_horizontal"
         android:textSize="40sp"
-        android:layout_weight="1" />
+        android:layout_weight="1"
+        android:layout_marginTop="20dp" />
 
     <LinearLayout
         android:orientation="vertical"
