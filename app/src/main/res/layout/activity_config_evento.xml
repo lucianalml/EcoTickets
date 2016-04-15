@@ -40,8 +40,8 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/edt_nome"
                 android:layout_gravity="center_horizontal"
-                android:inputType="textCapSentences"
-                android:maxLength="20" />
+                android:maxLength="20"
+                android:inputType="textCapWords" />
         </LinearLayout>
 
         <Button

@@ -149,10 +149,11 @@ public class GerarActivity extends AppCompatActivity {
 
 // Chama o aplicativo de e-mails para enviar o QrCode gerado para o destinatário
             Intent email = new Intent(Intent.ACTION_SEND);
-            email.setType("application/octet-stream");
-//            email.setType("message/rfc822");
+
+            email.setType("message/rfc822");
             email.putExtra(Intent.EXTRA_EMAIL, new String[]{vlEmail});
-            email.putExtra(Intent.EXTRA_SUBJECT, "Seu Ingresso para " + tvNomeEvento.getText());
+            email.putExtra(Intent.EXTRA_SUBJECT, "Seu ticket para " + tvNomeEvento.getText());
+            email.putExtra(Intent.EXTRA_TEXT, "Apresente o código em anexo para acessar o evento.");
             email.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             email.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file));
             email.setType("image/png");

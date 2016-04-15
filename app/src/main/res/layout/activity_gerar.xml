@@ -39,7 +39,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/edt_nome"
                 android:layout_gravity="center_horizontal"
-                android:inputType="text|textPersonName" />
+                android:inputType="textCapWords|textPersonName" />
         </LinearLayout>
 
         <LinearLayout
