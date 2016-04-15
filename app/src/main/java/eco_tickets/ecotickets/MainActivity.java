@@ -9,15 +9,24 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import io.realm.Realm;
+
 public class MainActivity extends AppCompatActivity {
 
     Button btnGerar, btnListar, btnCheckin;
     TextView tvNomeEvento;
 
+    private String nomeEvento;
+
+    private Realm realm;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        realm = Realm.getDefaultInstance();
 
         setUI();
         setActions();
@@ -28,12 +37,39 @@ public class MainActivity extends AppCompatActivity {
     private void setUI(){
 
         btnGerar = (Button) findViewById(R.id.btn_Gerar );
-//        btnListar = (Button) findViewById(R.id.btn_ListarConvidados );
         btnCheckin = (Button) findViewById(R.id.btn_Checkin );
         tvNomeEvento = (TextView) findViewById(R.id.txt_evento);
 
-        tvNomeEvento.setText(((EcoTickets) this.getApplication()).getNomeEvento());
+// Recupera o nome do evento cadastrado se houver
+        Evento evento = realm.where(Evento.class).findFirst();
 
+// Se não há nenhum evento cadastrado insere um com o nome inicial
+        if ( evento == null ) {
+            nomeEvento = ((EcoTickets) this.getApplication()).getNomeEvento();
+            realm.beginTransaction();
+            evento = realm.createObject(Evento.class);
+            evento.setNomeEvento(nomeEvento);
+            realm.commitTransaction();
+        } else {
+
+// Recupera o nome
+            nomeEvento = evento.getNomeEvento();
+        }
+
+        tvNomeEvento.setText(nomeEvento);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        realm.close(); // Remember to close Realm when done.
+    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        atualizaTela();
     }
 
     private void setActions(){
@@ -48,13 +84,16 @@ public class MainActivity extends AppCompatActivity {
                 fazerCheckIn(v);
             }
         });
-/*
-        btnListar.setOnClickListener( new View.OnClickListener() {
-            public void onClick(View v) {
-                listarConvidados();
-            }
-        });
-*/
+
+    }
+
+    public void atualizaTela() {
+        // Atualiza nome do evento
+        Evento evento = realm.where(Evento.class).findFirst();
+        if ( evento != null ){
+            nomeEvento = evento.getNomeEvento();
+        }
+        tvNomeEvento.setText(nomeEvento);
     }
 
     @Override

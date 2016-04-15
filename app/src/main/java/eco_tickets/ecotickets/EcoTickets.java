@@ -27,7 +27,7 @@ public class EcoTickets extends Application {
 //        Realm.deleteRealm(realmConfig);
         Realm.setDefaultConfiguration(realmConfig);
 
-        nomeEvento = "Evento Legal";
+        nomeEvento = "Novo Evento";
 
     }
 

@@ -37,10 +37,10 @@ public class GerarActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gerar);
 
+        realm = Realm.getDefaultInstance();
+
         setUI();
         setActions();
-
-        realm = Realm.getDefaultInstance();
 
     }
 
@@ -58,7 +58,16 @@ public class GerarActivity extends AppCompatActivity {
         edtEmail = (EditText) findViewById(R.id.edt_email);
 
         tvNomeEvento = (TextView) findViewById(R.id.txt_evento);
-        tvNomeEvento.setText(((EcoTickets) this.getApplication()).getNomeEvento());
+
+// Recupera o nome do evento
+        String nome = ((EcoTickets) this.getApplication()).getNomeEvento();
+        Evento evento = realm.where(Evento.class).findFirst();
+
+        if ( evento != null ){
+            nome = evento.getNomeEvento();
+        }
+
+        tvNomeEvento.setText(nome);
 
     }
 
@@ -143,7 +152,7 @@ public class GerarActivity extends AppCompatActivity {
             email.setType("application/octet-stream");
 //            email.setType("message/rfc822");
             email.putExtra(Intent.EXTRA_EMAIL, new String[]{vlEmail});
-            email.putExtra(Intent.EXTRA_SUBJECT, "Seu Ingresso");
+            email.putExtra(Intent.EXTRA_SUBJECT, "Seu Ingresso para " + tvNomeEvento.getText());
             email.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             email.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file));
             email.setType("image/png");
