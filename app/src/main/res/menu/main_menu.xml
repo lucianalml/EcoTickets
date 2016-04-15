@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <!-- Search, should appear as action button -->
+
     <item android:id="@+id/action_config"
         android:title="Configurar Evento" />
-    <!-- Settings, should always be in the overflow
-    <item android:id="@+id/action_settings"
-        android:title="Oi"/>-->
+
+    <item android:id="@+id/action_listar"
+        android:title="Listar convidados" />
+
 </menu>

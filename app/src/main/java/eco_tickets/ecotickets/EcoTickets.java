@@ -7,7 +7,17 @@ import io.realm.RealmConfiguration;
 
 public class EcoTickets extends Application {
 
-        @Override
+        private String nomeEvento;
+
+    public String getNomeEvento() {
+        return nomeEvento;
+    }
+
+    public void setNomeEvento(String nomeEvento) {
+        this.nomeEvento = nomeEvento;
+    }
+
+    @Override
         public void onCreate() {
         super.onCreate();
 
@@ -17,6 +27,7 @@ public class EcoTickets extends Application {
 //        Realm.deleteRealm(realmConfig);
         Realm.setDefaultConfiguration(realmConfig);
 
+        nomeEvento = "Evento Legal";
 
     }
 

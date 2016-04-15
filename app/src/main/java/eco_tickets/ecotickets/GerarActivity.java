@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.zxing.BarcodeFormat;
@@ -26,6 +27,8 @@ public class GerarActivity extends AppCompatActivity {
 
     Button btnEnviar;
     EditText edtNome, edtDocumento, edtEmail;
+    TextView tvNomeEvento;
+
     private Realm realm;
 
     @Override
@@ -53,6 +56,9 @@ public class GerarActivity extends AppCompatActivity {
         edtNome = (EditText) findViewById(R.id.edt_nome);
         edtDocumento = (EditText) findViewById(R.id.edt_documento);
         edtEmail = (EditText) findViewById(R.id.edt_email);
+
+        tvNomeEvento = (TextView) findViewById(R.id.txt_evento);
+        tvNomeEvento.setText(((EcoTickets) this.getApplication()).getNomeEvento());
 
     }
 
