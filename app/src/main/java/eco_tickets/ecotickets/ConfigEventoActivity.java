@@ -18,7 +18,7 @@ public class ConfigEventoActivity extends AppCompatActivity {
     Button btnSalvar, btnApagar;
     EditText edtNomeEvento;
     private Realm realm;
-    private String nome;
+    private String nome, nomeNovoEvento;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,23 +45,28 @@ public class ConfigEventoActivity extends AppCompatActivity {
         tvNomeEvento = (TextView) findViewById(R.id.txt_evento);
 
 //Recupera o nome do evento
-        nome = ((EcoTickets) this.getApplication()).getNomeEvento();
+        nomeNovoEvento = ((EcoTickets) this.getApplication()).getNomeEvento();
         Evento evento = realm.where(Evento.class).findFirst();
 
-        if ( evento != null ){
+        if ( evento != null ) {
             nome = evento.getNomeEvento();
+        }
+// Se o evento ainda não teve seu nome alterado
+        if  (nome.equals(nomeNovoEvento)) {
+            edtNomeEvento.setHint(nomeNovoEvento);
+        }
+        else {
+            edtNomeEvento.setText(nome);
         }
 
         tvNomeEvento.setText(nome);
-        edtNomeEvento.setHint(nome);
-
     }
 
     private void setActions() {
         btnSalvar.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 salvarConfig();
-                atualizaTela();
+                tvNomeEvento.setText(nome);
             }
         });
 
@@ -103,12 +108,6 @@ public class ConfigEventoActivity extends AppCompatActivity {
     }
 
 
-
-    public void atualizaTela () {
-        tvNomeEvento.setText(nome);
-        edtNomeEvento.setHint(nome);
-    }
-
     public void apagarLista (){
 
 // Envia alerta de confirmação
@@ -120,7 +119,15 @@ public class ConfigEventoActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int id) {
                         realm.beginTransaction();
                         realm.deleteAll();
-                        realm.commitTransaction();;
+                        Evento evento = realm.createObject(Evento.class);
+                        evento.setNomeEvento(nomeNovoEvento);
+                        realm.commitTransaction();
+
+                        nome = nomeNovoEvento;
+                        edtNomeEvento.setText("");
+                        edtNomeEvento.setHint(nomeNovoEvento);
+
+                        tvNomeEvento.setText(nome);
 
                         Toast.makeText(ConfigEventoActivity.this, "Dados do evento apagados com sucesso",
                                 Toast.LENGTH_SHORT).show();
@@ -138,5 +145,4 @@ public class ConfigEventoActivity extends AppCompatActivity {
 
 
     }
-
 }
