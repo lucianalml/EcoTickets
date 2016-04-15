@@ -1,18 +1,10 @@
 package eco_tickets.ecotickets;
 
-import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.GestureDetector;
-import android.view.MotionEvent;
-import android.view.View;
-import android.widget.CheckBox;
-import android.widget.Toast;
 
 import java.util.List;
 
@@ -44,6 +36,7 @@ public class ListarActivity extends AppCompatActivity {
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRecyclerView.setAdapter(mAdapter);
 
+/*
         mRecyclerView.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(), mRecyclerView, new ClickListener() {
 
 
@@ -114,6 +107,8 @@ public class ListarActivity extends AppCompatActivity {
             }
         }));
 
+*/
+
     }
 
     @Override
@@ -122,9 +117,10 @@ public class ListarActivity extends AppCompatActivity {
         realm.close(); // Remember to close Realm when done.
     }
 
+
+/*
     public interface ClickListener {
         void onClick(View view, int position);
-
         void onLongClick(View view, int position);
     }
 
@@ -171,6 +167,8 @@ public class ListarActivity extends AppCompatActivity {
         }
 
     }
+
+*/
 
 }
 
